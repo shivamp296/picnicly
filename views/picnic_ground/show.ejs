@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show</title>
+</head>
+<body>
+    <h1>PICNIC GROUND - SHOW</h1>
+    <h2><%=catch_id.title%></h2>
+    <h2><%=catch_id.location%></h2>
+    <!-- <p>
+        Jab delete route prr click krre to ye hogaa 
+        <form action="/picnic_ground/<%=catch_id._id%>?_method=DELETE" method="POST">  
+            <button>DELETE</button>
+        </form>
+    </p> -->
+    <p>
+        <form method="POST" action="/picnic_ground/<%=catch_id._id%>?_method=DELETE">
+        <button>Delete</button>
+        </form>
+    </p>
+    <footer>
+        <a href="/picnic_ground/<%=catch_id._id%>/edit">Editing</a>
+        <a href="/picnic_ground">Show All campground</a>
+    </footer>
+</body>
+</html>
