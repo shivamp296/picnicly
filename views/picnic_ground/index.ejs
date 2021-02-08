@@ -1,22 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picnic Spots</title>
-</head>
-<body>
-    
-    <h1>All picnic spots</h1>
-    <div>
-        <a href="/picnic_ground/new">Click here for adding new Picnic Ground</a>
-    </div>
-    
-    <ul>
-        <!-- picnics is a database collection where we seeded n stored data -->
-        <% for(let i of picnic_ground1){ %>
-             <li><a href="/picnic_ground/<%=i._id%>"><%= i.title %></a></li>
-        <% } %> 
-    </ul>
-</body>
-</html>
+<% layout('layouts/boilerplate') %>
+<h1>All picnic spots</h1>
+<div>
+    <a href="/picnic_ground/new">Click here for adding new Picnic Ground</a>
+</div>
+
+<ul>
+    <!-- picnics is a database collection where we seeded n stored data -->
+    <% for(let i of picnic_ground1){ %>
+        <li><a href="/picnic_ground/<%=i._id%>"><%= i.title %></a></li>
+    <% } %> 
+</ul>

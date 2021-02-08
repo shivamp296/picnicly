@@ -1,5 +1,6 @@
 const express=require("express");
 const path=require("path");
+const ejsMate=require("ejs-mate");
 const methodOverride=require("method-override");
 const mongoose=require('mongoose');
 
@@ -22,6 +23,7 @@ db.once('open',()=>{
 
 const app=express();
 
+app.engine('ejs',ejsMate);
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
 
@@ -83,6 +85,6 @@ app.delete("/picnic_ground/:id",async(req,res)=>{      //suffered 2 hrs because 
 //     res.render("picnic_ground/new");
 // })
 
-app.listen(3000,()=>{
-    console.log("Listening on the port : 3000");
+app.listen(3001,()=>{
+    console.log("Listening on the port : 3001");
 })
