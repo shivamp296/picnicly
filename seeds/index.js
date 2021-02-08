@@ -25,9 +25,14 @@ const seedDB=async()=>{
 
     for(let i=0;i<50;i++){
         const random1000=Math.floor(Math.random()*1000);
+        const price=Math.floor(Math.random()*20)+10;
         const pic1 = new Picnic({
             location:`${cities[random1000].city},${cities[random1000].state}`,
-            title:`${sample(descriptors)} ${sample(places)}`
+            title:`${sample(descriptors)} ${sample(places)}`,
+            image:`https://source.unsplash.com/collection/190727/1600x900`,
+            description:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, ea? Ut velit mollitia placeat! Hic minima inventore, exercitationem commodi esse cum? Dolorum dolorem inventore commodi!`,
+            price:price
+            // or no need just write =>  price
         })
         await pic1.save();
     }

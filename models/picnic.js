@@ -3,7 +3,8 @@ const Schema=mongoose.Schema;   //no need of writing mongoose.Schema everytime i
 
 const PicnicSchema=new Schema({
     title: String,
-    price: String,
+    image: String,
+    price: Number,
     description: String,
     location: String
 });
