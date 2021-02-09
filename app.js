@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 
 const Picnic=require('./models/picnic');
 
-mongoose.connect('mongodb://localhost:27017/picnic-ly',{                //connect to database *** picnic-ly ***
+mongoose.connect('mongodb://localhost:27017/picnic-ly',{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
     useCreateIndex:true,
     useUnifiedTopology:true,
@@ -87,4 +87,4 @@ app.delete("/picnic_ground/:id",async(req,res)=>{      //suffered 2 hrs because 
 
 app.listen(3001,()=>{
     console.log("Listening on the port : 3001");
-})
+});
