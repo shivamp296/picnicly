@@ -2,30 +2,45 @@
 <div class="row">
     <h1 class="text-center">Edit Picnic Spot</h1>
     <div class="col-6  offset-3">
-        <form action="/picnic_ground/<%=catch_id._id%>/?_method=PUT" method="POST">
+        <form action="/picnic_ground/<%=catch_id._id%>/?_method=PUT" method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="picnic[title]" value="<%=catch_id.title%>"> 
+                <input class="form-control" type="text" id="title" name="picnic[title]" value="<%=catch_id.title%>" required> 
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="picnic[location]" value="<%=catch_id.location%>"> 
+                <input class="form-control" type="text" id="location" name="picnic[location]" value="<%=catch_id.location%>" required> 
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="picnic[image]" value="<%=catch_id.image%>"> 
+                <input class="form-control" type="text" id="image" name="picnic[image]" value="<%=catch_id.image%>" required> 
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">Price</label>
                 <div class="input-group">
                     <span class="input-group-text" id="price-label">$</span>
                     <input type="text" class="form-control" id="price" name="picnic[price]" value="<%=catch_id.price%>" placeholder="0.00" aria-label="price"
-                    aria-describedby="price-label">
+                    aria-describedby="price-label" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                      </div>
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="picnic[description]"> <%=catch_id.description%> </textarea> 
+                <textarea class="form-control" type="text" id="description" name="picnic[description]" required> <%=catch_id.description%> </textarea> 
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">Update Picnic Ground</button>
