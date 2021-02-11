@@ -3,6 +3,10 @@ const path=require("path");
 const ejsMate=require("ejs-mate");
 const methodOverride=require("method-override");
 const mongoose=require('mongoose');
+const catchAsync=require("./utils/catchAsync");
+const ExpressError=require("./utils/ExpressError");
+// const Joi = require("joi");
+const {picnicSchema}=require("./schemas.js");
 
 const Picnic=require('./models/picnic');
 
@@ -30,60 +34,103 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 
+const validatePicnic=(req,res,next)=>{
+    // not a mongoose schema but this will validate stuffs before saving to mongoose.
+    const {error}=picnicSchema.validate(req.body);
+    if(error){
+        const msg=error.details.map(el=>el.message).join(',')
+        throw new ExpressError(msg,400);
+    }else{
+        next();
+    }
+}
 
 app.get("/",(req,res)=>{
     res.render('home');
 })
 
-app.get("/picnic_ground",async(req,res)=>{
+//adding catchAsync() function to handles errors.
+
+app.get("/picnic_ground",catchAsync(async(req,res)=>{
     const picnic_ground1=await Picnic.find({});
     res.render('picnic_ground/index',{picnic_ground1});
-})
+}));
 
-app.get("/picnic_ground/new",(req,res)=>{        
+app.get("/picnic_ground/new",catchAsync(async(req,res)=>{        
     res.render("picnic_ground/new");
-})
+}));
 
-app.post("/picnic_ground",async(req,res)=>{
-    // res.send(req.body);     //we dont see anything it is empty bcz req.body is not parsed
-    // const picnic=new Picnic(req.body.picnic);     //creating model named picnic n saving in the existing model picnic
-    // await picnic.save();                             //saving it
+app.post("/picnic_ground",validatePicnic,catchAsync(async(req,res,next)=>{
+    // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
 
-    //OORR
+    const new_model_variable=new Picnic(req.body.picnic);    
+    await new_model_variable.save();                           
+    res.redirect(`/picnic_ground/${new_model_variable._id}`);   
+}));
 
-    const new_model_variable=new Picnic(req.body.picnic);     //creating model named picnic n saving in the existing model picnic
-    await new_model_variable.save();                             //saving it
-    res.redirect(`/picnic_ground/${new_model_variable._id}`);    //redirecting n getting the id.
-});
+// app.post("/picnic_ground",async(req,res,next)=>{
+//     // res.send(req.body);     //we dont see anything it is empty bcz req.body is not parsed
+//     // const picnic=new Picnic(req.body.picnic);     //creating model named picnic n saving in the existing model picnic
+//     // await picnic.save();                             //saving it
 
-app.get("/picnic_ground/:id",async(req,res)=>{
+//     //OORR
+
+//     try{
+
+//     const new_model_variable=new Picnic(req.body.picnic);     //creating model named picnic n saving in the existing model picnic
+//     await new_model_variable.save();                             //saving it
+//     res.redirect(`/picnic_ground/${new_model_variable._id}`);    //redirecting n getting the id.
+
+//     }catch(e){
+//         next(e);
+//     }
+
+// });
+
+app.get("/picnic_ground/:id",catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id);
     res.render('picnic_ground/show',{catch_id});
-});
+}));
 
-app.get("/picnic_ground/:id/edit",async(req,res)=>{
+app.get("/picnic_ground/:id/edit",catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id);
     res.render('picnic_ground/edit',{catch_id});
-});
+}));
 
-app.put("/picnic_ground/:id",async(req,res)=>{
+app.put("/picnic_ground/:id",catchAsync(async(req,res)=>{
     // res.send("It worked");
     const {id}=req.params;      //id is a object , that stores all req parameters. 
     const picnic3 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here.
     res.redirect(`/picnic_ground/${picnic3._id}`);
-});
+}));
 
-app.delete("/picnic_ground/:id",async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
+app.delete("/picnic_ground/:id",catchAsync(async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
     // res.send("it worked");
     const {id}=req.params;
     await Picnic.findByIdAndDelete(id);
     res.redirect('/picnic_ground');
-});
+}));
 
+//for something that didn't exist, it should be written at end
+// app.all("*",(req,res)=>{
+//    res.send("404 !!! "); 
+// });
+app.all("*",(req,res,next)=>{
+//    res.send("404 !!! "); 
+    next(new ExpressError("Page not found !",404));
+});
 
 // app.get("/picnic_ground/new",(req,res)=>{        Write above id, because new will be treated  as :id
 //     res.render("picnic_ground/new");
 // })
+
+app.use((err,req,res,next)=>{
+    // res.send("Oh boy something went wrong!!");
+    const {statusCode=500}= err;
+    if(!err.message) err.message='Oh no! Something went wrong !';
+    // res.status(statusCode).send(message);
+    res.status(statusCode).render('errors',{err});
+});
 
 app.listen(3001,()=>{
     console.log("Listening on the port : 3001");
