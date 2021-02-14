@@ -6,7 +6,13 @@ const PicnicSchema=new Schema({
     image: String,
     price: Number,
     description: String,
-    location: String
+    location: String,
+    reviews:[
+        {
+            type:Schema.Types.ObjectId,      //take id as a type 
+            ref:"Review"                       //take reference from Review Model.
+        }
+    ]
 });
 
 module.exports=mongoose.model('picnic',PicnicSchema); //make available outside
