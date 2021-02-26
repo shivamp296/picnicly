@@ -5,6 +5,7 @@ const methodOverride=require("method-override");
 const mongoose=require('mongoose');
 const catchAsync=require("./utils/catchAsync");
 const ExpressError=require("./utils/ExpressError");
+const Review=require("./models/review");
 // const Joi = require("joi");
 const {picnicSchema}=require("./schemas.js");
 
@@ -109,6 +110,19 @@ app.delete("/picnic_ground/:id",catchAsync(async(req,res)=>{      //suffered 2 h
     const {id}=req.params;
     await Picnic.findByIdAndDelete(id);
     res.redirect('/picnic_ground');
+}));
+
+app.post("/picnic_ground/:id/reviews",catchAsync(async(req,res)=>{
+    // res.send("You made it !");  
+    const picnic=await Picnic.findById(req.params.id);
+
+    const review=new Review(req.body.review);           //yeh jo review hai woh array hai jo humne form main use kiya tha...
+    //  .......req.....se body uthao......body se review array uthao.....
+    picnic.reviews.push(review);    //picnic model ke andrr kaa reviews field main push krro review array ko...
+    await review.save();  //save it...
+    await picnic.save();  //save model..
+    res.redirect(`/picnic_ground/${picnic._id}`)
+
 }));
 
 //for something that didn't exist, it should be written at end
