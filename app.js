@@ -7,7 +7,7 @@ const catchAsync=require("./utils/catchAsync");
 const ExpressError=require("./utils/ExpressError");
 const Review=require("./models/review");
 // const Joi = require("joi");
-const {picnicSchema}=require("./schemas.js");
+const {picnicSchema,reviewSchema}=require("./schemas.js");
 
 const Picnic=require('./models/picnic');
 
