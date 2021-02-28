@@ -46,6 +46,16 @@ const validatePicnic=(req,res,next)=>{
     }
 }
 
+const validateReview=(req,res,next)=>{
+    const {error}=reviewSchema.validate(req.body);
+    if(error){
+        const msg=error.details.map(el=>el.message).join(',')
+        throw new ExpressError(msg,400);
+    }else{
+        next();
+    }
+}
+
 app.get("/",(req,res)=>{
     res.render('home');
 })
@@ -112,7 +122,7 @@ app.delete("/picnic_ground/:id",catchAsync(async(req,res)=>{      //suffered 2 h
     res.redirect('/picnic_ground');
 }));
 
-app.post("/picnic_ground/:id/reviews",catchAsync(async(req,res)=>{
+app.post("/picnic_ground/:id/reviews",validateReview, catchAsync(async(req,res)=>{
     // res.send("You made it !");  
     const picnic=await Picnic.findById(req.params.id);
 
