@@ -40,6 +40,14 @@
               <!-- body naam diyaa hu... review.js main -->
               <button class="btn btn-success">Submit</button>
           </form>
+
+          <% for(let rev of catch_id.reviews){ %> 
+            <div class="mb-3">
+              <p>Rating : <%= rev.rating %> </p>
+              <p>Review : <%= rev.body %></p>                
+                 <!--It will display everything that rev variable contains .body is a field inside model  -->
+            </div>
+          <% } %> 
     </div>
 </div>
 
