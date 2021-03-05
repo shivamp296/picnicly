@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
 
 <div class="row">
-    <div class="col-6 offset-4">
-        <div class="card mb-3" style="width: 18rem;">
+    <div class="col-6">
+        <div class="card mb-3" style="width: 34rem">
             <img src="<%= catch_id.image %> " class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title"><%=catch_id.title%></h5>
@@ -23,7 +23,11 @@
                  <a href="/picnic_ground">Show All campground</a>
             </div>
           </div>
-          <h2>Leave a review</h2>
+                
+    </div>
+
+    <div class="col-6">
+      <h2>Leave a review</h2>
           <form action="/picnic_ground/<%= catch_id._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
             <div class="mb-3">
               <label class="form-label" for="rating">Rating</label>
@@ -42,11 +46,13 @@
           </form>
 
           <% for(let rev of catch_id.reviews){ %> 
-            <div class="mb-3">
-              <p>Rating : <%= rev.rating %> </p>
-              <p>Review : <%= rev.body %></p>                
+            <div class="mb-3 card">
+            <div class="card-body">
+              <h5 class="card-title">Rating : <%= rev.rating %></h5>
+              <p class="card-text"><%= rev.body %></p>              
                  <!--It will display everything that rev variable contains .body is a field inside model  -->
             </div>
+          </div>
           <% } %> 
     </div>
 </div>
