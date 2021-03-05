@@ -99,7 +99,8 @@ app.post("/picnic_ground",validatePicnic,catchAsync(async(req,res,next)=>{
 // });
 
 app.get("/picnic_ground/:id",catchAsync(async(req,res)=>{
-    const catch_id=await Picnic.findById(req.params.id);
+    const catch_id=await Picnic.findById(req.params.id).populate('reviews');
+    // console.log(catch_id); just for checking
     res.render('picnic_ground/show',{catch_id});
 }));
 
