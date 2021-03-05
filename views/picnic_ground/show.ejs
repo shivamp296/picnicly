@@ -51,6 +51,10 @@
               <h5 class="card-title">Rating : <%= rev.rating %></h5>
               <p class="card-text"><%= rev.body %></p>              
                  <!--It will display everything that rev variable contains .body is a field inside model  -->
+              <form action="/picnic_ground/<%= catch_id._id %>/reviews/<%= rev._id %>?_method=DELETE" method="post"> 
+              <!-- rev se hii review ki id aa rhi -->
+                <button class="btn btm-sm btn-danger">Delete</button>
+              </form>  
             </div>
           </div>
           <% } %> 

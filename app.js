@@ -2,6 +2,7 @@ const express=require("express");
 const path=require("path");
 const ejsMate=require("ejs-mate");
 const methodOverride=require("method-override");
+// method-override mtlab --- hrr chigg post main hi krrun.. but ?_method="DELETE" se rename krrke usko delete route bnaa dun..
 const mongoose=require('mongoose');
 const catchAsync=require("./utils/catchAsync");
 const ExpressError=require("./utils/ExpressError");
@@ -133,6 +134,16 @@ app.post("/picnic_ground/:id/reviews",validateReview, catchAsync(async(req,res)=
     await review.save();  //save it...
     await picnic.save();  //save model..
     res.redirect(`/picnic_ground/${picnic._id}`)
+
+}));
+
+app.delete("/picnic_ground/:id/reviews/:reviewId",catchAsync(async(req,res)=>{
+    const {id,reviewId}=req.params;
+
+    Picnic.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});        //we have to delete from picic too.. not all ..but a particular one so we have used $pull that pull out from array
+    await Review.findByIdAndDelete(reviewId);
+    // res.send("Delete me");
+    res.redirect(`/picnic_ground/${id}`);
 
 }));
 
