@@ -168,6 +168,6 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render('errors',{err});
 });
 
-app.listen(3001,()=>{
-    console.log("Listening on the port : 3001");
+app.listen(3000,()=>{
+    console.log("Listening on the port : 3000");
 });
