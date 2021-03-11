@@ -28,6 +28,9 @@ router.post("/",validateReview, catchAsync(async(req,res)=>{
     picnic.reviews.push(review);    //picnic model ke andrr kaa reviews field main push krro review array ko...
     await review.save();  //save it...
     await picnic.save();  //save model..
+
+    req.flash("success","Created a new review !");
+
     res.redirect(`/picnic_ground/${picnic._id}`)
 
 }));
@@ -38,6 +41,9 @@ router.delete("/:reviewId",catchAsync(async(req,res)=>{
     Picnic.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});        //we have to delete from picic too.. not all ..but a particular one so we have used $pull that pull out from array
     await Review.findByIdAndDelete(reviewId);
     // res.send("Delete me");
+
+    req.flash("success","Successfully deleted a review");
+
     res.redirect(`/picnic_ground/${id}`);
 
 }));

@@ -73,6 +73,7 @@ router.put("/:id",catchAsync(async(req,res)=>{
     // res.send("It worked");
     const {id}=req.params;      //id is a object , that stores all req parameters. 
     const picnic3 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here.
+    req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }));
 
@@ -80,6 +81,7 @@ router.delete("/:id",catchAsync(async(req,res)=>{      //suffered 2 hrs because 
     // res.send("it worked");
     const {id}=req.params;
     await Picnic.findByIdAndDelete(id);
+    req.flash("success","Successfully deleted a picnic ground");
     res.redirect('/picnic_ground');
 }));
 
