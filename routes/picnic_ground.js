@@ -32,7 +32,10 @@ router.post("/",validatePicnic,catchAsync(async(req,res,next)=>{
     // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
 
     const new_model_variable=new Picnic(req.body.picnic);    
-    await new_model_variable.save();                           
+    await new_model_variable.save();       
+    
+    req.flash('success','Successfully made a new picnic ground !');
+
     res.redirect(`/picnic_ground/${new_model_variable._id}`);   
 }));
 

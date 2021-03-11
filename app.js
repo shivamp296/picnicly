@@ -11,6 +11,7 @@ const Review=require("./models/review");
 // const {picnicSchema,reviewSchema}=require("./schemas.js");
 
 const session=require('express-session');
+const flash=require('connect-flash');
 
 const Picnic=require('./models/picnic');
 
@@ -54,6 +55,7 @@ const sessionConfig={
     }
 }
 app.use(session(sessionConfig));
+app.use(flash());
 
 // const validateReview=(req,res,next)=>{
 //     const {error}=reviewSchema.validate(req.body);
@@ -65,6 +67,11 @@ app.use(session(sessionConfig));
 //     }
 // }
 
+app.use((req,res,next)=>{
+    res.locals.success=req.flash('success');
+    res.locals.error=req.flash('error');
+    next();
+})
 
 app.use("/picnic_ground",picnic_ground);    //useful in breaking down  picnic_ground routes.
 app.use("/picnic_ground/:id/reviews",reviews);    //useful in breaking down reviews routes.
