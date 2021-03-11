@@ -38,6 +38,8 @@ app.set('views',path.join(__dirname,'views'));
 
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
+// app.use(express.static('public'));  //telling our app to serve public directory
+app.use(express.static(path.join(__dirname,'public')));  //telling our app to serve public directory
 
 // const validateReview=(req,res,next)=>{
 //     const {error}=reviewSchema.validate(req.body);
