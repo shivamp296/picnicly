@@ -4,15 +4,16 @@ const ejsMate=require("ejs-mate");
 const methodOverride=require("method-override");
 // method-override mtlab --- hrr chigg post main hi krrun.. but ?_method="DELETE" se rename krrke usko delete route bnaa dun..
 const mongoose=require('mongoose');
-const catchAsync=require("./utils/catchAsync");
+// const catchAsync=require("./utils/catchAsync");
 const ExpressError=require("./utils/ExpressError");
 const Review=require("./models/review");
 // const Joi = require("joi");
-const {picnicSchema,reviewSchema}=require("./schemas.js");
+// const {picnicSchema,reviewSchema}=require("./schemas.js");
 
 const Picnic=require('./models/picnic');
 
-const picnic_ground=require('./routes/picnic_ground');
+const picnic_ground=require('./routes/picnic_ground');      //necessary for breakouts
+const reviews=require('./routes/reviews');                  //necessary for breakouts
 
 mongoose.connect('mongodb://localhost:27017/picnic-ly',{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
@@ -38,18 +39,19 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 
-const validateReview=(req,res,next)=>{
-    const {error}=reviewSchema.validate(req.body);
-    if(error){
-        const msg=error.details.map(el=>el.message).join(',')
-        throw new ExpressError(msg,400);
-    }else{
-        next();
-    }
-}
+// const validateReview=(req,res,next)=>{
+//     const {error}=reviewSchema.validate(req.body);
+//     if(error){
+//         const msg=error.details.map(el=>el.message).join(',')
+//         throw new ExpressError(msg,400);
+//     }else{
+//         next();
+//     }
+// }
 
 
-app.use("/picnic_ground",picnic_ground);    //useful in breaking down routes.
+app.use("/picnic_ground",picnic_ground);    //useful in breaking down  picnic_ground routes.
+app.use("/picnic_ground/:id/reviews",reviews);    //useful in breaking down reviews routes.
 
 app.get("/",(req,res)=>{
     res.render('home');
@@ -59,33 +61,34 @@ app.get("/",(req,res)=>{
 
 
 
-app.post("/picnic_ground/:id/reviews",validateReview, catchAsync(async(req,res)=>{
-    // res.send("You made it !");  
-    const picnic=await Picnic.findById(req.params.id);
+// app.post("/picnic_ground/:id/reviews",validateReview, catchAsync(async(req,res)=>{
+//     // res.send("You made it !");  
+//     const picnic=await Picnic.findById(req.params.id);
 
-    const review=new Review(req.body.review);           //yeh jo review hai woh array hai jo humne form main use kiya tha...
-    //  .......req.....se body uthao......body se review array uthao.....
-    picnic.reviews.push(review);    //picnic model ke andrr kaa reviews field main push krro review array ko...
-    await review.save();  //save it...
-    await picnic.save();  //save model..
-    res.redirect(`/picnic_ground/${picnic._id}`)
+//     const review=new Review(req.body.review);           //yeh jo review hai woh array hai jo humne form main use kiya tha...
+//     //  .......req.....se body uthao......body se review array uthao.....
+//     picnic.reviews.push(review);    //picnic model ke andrr kaa reviews field main push krro review array ko...
+//     await review.save();  //save it...
+//     await picnic.save();  //save model..
+//     res.redirect(`/picnic_ground/${picnic._id}`)
 
-}));
+// }));
 
-app.delete("/picnic_ground/:id/reviews/:reviewId",catchAsync(async(req,res)=>{
-    const {id,reviewId}=req.params;
+// app.delete("/picnic_ground/:id/reviews/:reviewId",catchAsync(async(req,res)=>{
+//     const {id,reviewId}=req.params;
 
-    Picnic.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});        //we have to delete from picic too.. not all ..but a particular one so we have used $pull that pull out from array
-    await Review.findByIdAndDelete(reviewId);
-    // res.send("Delete me");
-    res.redirect(`/picnic_ground/${id}`);
+//     Picnic.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});        //we have to delete from picic too.. not all ..but a particular one so we have used $pull that pull out from array
+//     await Review.findByIdAndDelete(reviewId);
+//     // res.send("Delete me");
+//     res.redirect(`/picnic_ground/${id}`);
 
-}));
+// }));
 
 //for something that didn't exist, it should be written at end
 // app.all("*",(req,res)=>{
 //    res.send("404 !!! "); 
 // });
+
 app.all("*",(req,res,next)=>{
 //    res.send("404 !!! "); 
     next(new ExpressError("Page not found !",404));
