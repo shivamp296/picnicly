@@ -10,6 +10,8 @@ const Review=require("./models/review");
 // const Joi = require("joi");
 // const {picnicSchema,reviewSchema}=require("./schemas.js");
 
+const session=require('express-session');
+
 const Picnic=require('./models/picnic');
 
 const picnic_ground=require('./routes/picnic_ground');      //necessary for breakouts
@@ -40,6 +42,18 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 // app.use(express.static('public'));  //telling our app to serve public directory
 app.use(express.static(path.join(__dirname,'public')));  //telling our app to serve public directory
+
+const sessionConfig={
+    secret:'thisshouldbeabettersecret!',
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        httpOnly:true,
+        expires: Date.now() + 1000*60*60*24*7,  //present date se 7 days tkk...
+        maxAge: 1000*60*60*24*7                 //max 7 days time in milli-seconds
+    }
+}
+app.use(session(sessionConfig));
 
 // const validateReview=(req,res,next)=>{
 //     const {error}=reviewSchema.validate(req.body);
