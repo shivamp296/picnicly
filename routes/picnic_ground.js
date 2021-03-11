@@ -61,11 +61,21 @@ router.post("/",validatePicnic,catchAsync(async(req,res,next)=>{
 router.get("/:id",catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id).populate('reviews');
     // console.log(catch_id); just for checking
+
+    if(!catch_id){
+        req.flash('error','Cannot find that picnic spot u entered !');
+        return res.redirect("/picnic_ground");
+    }
     res.render('picnic_ground/show',{catch_id});
+
 }));
 
 router.get("/:id/edit",catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id);
+    if(!catch_id){
+        req.flash('error','Cannot find that picnic spot u entered !');
+        return res.redirect("/picnic_ground");
+    }
     res.render('picnic_ground/edit',{catch_id});
 }));
 
