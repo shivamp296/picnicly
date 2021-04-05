@@ -10,6 +10,10 @@ const Review=require("./models/review");
 // const Joi = require("joi");
 // const {picnicSchema,reviewSchema}=require("./schemas.js");
 
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user");
+
 const session=require('express-session');
 const flash=require('connect-flash');
 
@@ -67,11 +71,24 @@ app.use(flash());
 //     }
 // }
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
     res.locals.success=req.flash('success');
     res.locals.error=req.flash('error');
     next();
-})
+});
+
+app.get("/fakeuser",async(req,res)=>{
+    const user=new User({email:"colt@gmail.com",username:"colttt"});
+    const newUser=await User.register(user,"chicken");
+    res.send(newUser);
+});
 
 app.use("/picnic_ground",picnic_ground);    //useful in breaking down  picnic_ground routes.
 app.use("/picnic_ground/:id/reviews",reviews);    //useful in breaking down reviews routes.
