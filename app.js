@@ -19,8 +19,9 @@ const flash=require('connect-flash');
 
 const Picnic=require('./models/picnic');
 
-const picnic_ground=require('./routes/picnic_ground');      //necessary for breakouts
-const reviews=require('./routes/reviews');                  //necessary for breakouts
+const picnic_groundRoutes=require('./routes/picnic_ground');      //necessary for breakouts
+const reviewsRoutes=require('./routes/reviews');                  //necessary for breakouts
+const userRoutes=require("./routes/users")
 
 mongoose.connect('mongodb://localhost:27017/picnic-ly',{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
@@ -90,8 +91,9 @@ app.get("/fakeuser",async(req,res)=>{
     res.send(newUser);
 });
 
-app.use("/picnic_ground",picnic_ground);    //useful in breaking down  picnic_ground routes.
-app.use("/picnic_ground/:id/reviews",reviews);    //useful in breaking down reviews routes.
+app.use("/picnic_ground",picnic_groundRoutes);    //useful in breaking down  picnic_ground routes.
+app.use("/picnic_ground/:id/reviews",reviewsRoutes);    //useful in breaking down reviews routes.
+app.use("/",userRoutes);    //useful in breaking down reviews routes.
 
 app.get("/",(req,res)=>{
     res.render('home');
