@@ -34,8 +34,12 @@ router.get("/login",(req,res)=>{
 });
 
 router.post("/login",passport.authenticate("local",{failureFlash:true,failureRedirect:"/login"}),(req,res)=>{
+
     req.flash("success","Welcome back !");
-    res.redirect("/picnic_ground");
+    const redirectUrl=req.session.returnTo || "/picnic_ground"; //redirecting to the current page
+    delete req.session.returnTo //after storing in redirectUrl no need of storring unnecessary session
+    res.redirect(redirectUrl);
+
 });
 
 router.get("/logout",(req,res)=>{
