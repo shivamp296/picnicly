@@ -7,6 +7,7 @@ const ExpressError=require("../utils/ExpressError");
 const Picnic=require('../models/picnic');
 
 const {picnicSchema}=require("../schemas.js");
+const {isLoggedIn}=require("../middleware");
 
 const validatePicnic=(req,res,next)=>{
     // not a mongoose schema but this will validate stuffs before saving to mongoose.
@@ -24,11 +25,18 @@ router.get("/",catchAsync(async(req,res)=>{
     res.render('picnic_ground/index',{picnic_ground1});
 }));
 
-router.get("/new",catchAsync(async(req,res)=>{        
+router.get("/new",isLoggedIn,catchAsync(async(req,res)=>{    
+    //else write here if statement middleware
+
+        // if(!req.isAuthenticated()){
+        //     req.flash("error","You must be signed in first");
+        //     return res.redirect("/login");
+        // }
+
     res.render("picnic_ground/new");
 }));
 
-router.post("/",validatePicnic,catchAsync(async(req,res,next)=>{
+router.post("/",isLoggedIn,validatePicnic,catchAsync(async(req,res,next)=>{
     // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
 
     const new_model_variable=new Picnic(req.body.picnic);    
@@ -58,7 +66,7 @@ router.post("/",validatePicnic,catchAsync(async(req,res,next)=>{
 
 // });
 
-router.get("/:id",catchAsync(async(req,res)=>{
+router.get("/:id",isLoggedIn,catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id).populate('reviews');
     // console.log(catch_id); just for checking
 
