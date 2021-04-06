@@ -31,4 +31,11 @@ router.post("/login",passport.authenticate("local",{failureFlash:true,failureRed
     res.redirect("/picnic_ground");
 });
 
+router.get("/logout",(req,res)=>{
+    req.logout();
+    req.flash("success","Goodbye u r logged out !");
+    res.redirect("/picnic_ground");
+})
+
+
 module.exports=router;
