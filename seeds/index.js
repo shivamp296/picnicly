@@ -8,7 +8,7 @@ mongoose.connect('mongodb://localhost:27017/picnic-ly',{                //connec
     useUnifiedTopology:true
 });      
 
-const db=mongoose.connection;   //using db as shorthand notation for mongoose.connection.
+const db=mongoose.connection;   //using db as shorthand notation for mongoose.connection...
 db.on('error', console.error.bind(console,'connection error !: '));
 
 db.once('open',()=>{
