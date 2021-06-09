@@ -1,3 +1,8 @@
+const {picnicSchema,reviewSchema}=require("./schemas.js");
+const ExpressError=require("./utils/ExpressError");
+const Picnic=require('./models/picnic');
+// const {reviewSchema}=require("./schemas.js");
+
 module.exports.isLoggedIn=(req,res,next)=>{
     // console.log("req.user...",req.user); give details of current user
 
@@ -15,3 +20,35 @@ module.exports.isLoggedIn=(req,res,next)=>{
     }
     next();
 }
+
+module.exports.validatePicnic=(req,res,next)=>{
+    // not a mongoose schema but this will validate stuffs before saving to mongoose.
+    const {error}=picnicSchema.validate(req.body);
+    if(error){
+        const msg=error.details.map(el=>el.message).join(',')
+        throw new ExpressError(msg,400);
+    }else{
+        next();
+    }
+}
+
+//middleware
+module.exports.isAuthor = async(req,res,next)=>{
+    const {id}=req.params;      //id is a object , that stores all req parameters. 
+    const picnic3 = await Picnic.findById(id);
+    if(!picnic3.author.equals(req.user._id)){
+        req.flash('error',"You don't have permission to do that");
+        return res.redirect(`/picnic_ground/${id}`);
+    }
+    next(); 
+}
+
+module.exports.validateReview=(req,res,next)=>{
+        const {error}=reviewSchema.validate(req.body);
+        if(error){
+            const msg=error.details.map(el=>el.message).join(',')
+            throw new ExpressError(msg,400);
+        }else{
+            next();
+        }
+    }

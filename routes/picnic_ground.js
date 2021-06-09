@@ -7,18 +7,31 @@ const ExpressError=require("../utils/ExpressError");
 const Picnic=require('../models/picnic');
 
 const {picnicSchema}=require("../schemas.js");
-const {isLoggedIn}=require("../middleware");
+const {isLoggedIn,isAuthor,validatePicnic}=require("../middleware");
 
-const validatePicnic=(req,res,next)=>{
-    // not a mongoose schema but this will validate stuffs before saving to mongoose.
-    const {error}=picnicSchema.validate(req.body);
-    if(error){
-        const msg=error.details.map(el=>el.message).join(',')
-        throw new ExpressError(msg,400);
-    }else{
-        next();
-    }
-}
+// Moving this in a middleware file...
+
+// const validatePicnic=(req,res,next)=>{
+//     // not a mongoose schema but this will validate stuffs before saving to mongoose.
+//     const {error}=picnicSchema.validate(req.body);
+//     if(error){
+//         const msg=error.details.map(el=>el.message).join(',')
+//         throw new ExpressError(msg,400);
+//     }else{
+//         next();
+//     }
+// }
+
+// //middleware
+// const isAuthor = async(req,res,next)=>{
+//     const {id}=req.params;      //id is a object , that stores all req parameters. 
+//     const picnic3 = await Picnic.findById(id);
+//     if(!picnic3.author.equals(req.user._id)){
+//         req.flash('error',"You don't have permission to do that");
+//         return res.redirect(`/picnic_ground/${id}`);
+//     }
+//     next(); 
+// }
 
 router.get("/",catchAsync(async(req,res)=>{
     const picnic_ground1=await Picnic.find({});
@@ -79,7 +92,7 @@ router.get("/:id",catchAsync(async(req,res)=>{
 
 }));
 
-router.get("/:id/edit",isLoggedIn,catchAsync(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,isAuthor,catchAsync(async(req,res)=>{
     const {id}=req.params;
     const catch_id=await Picnic.findById(id);
     
@@ -88,28 +101,35 @@ router.get("/:id/edit",isLoggedIn,catchAsync(async(req,res)=>{
         return res.redirect("/picnic_ground");
     }
 
-    if(!catch_id.author.equals(req.user._id)){
-        req.flash('error',"You don't have permission to do that");
-        return res.redirect(`/picnic_ground/${id}`);
-    }
+    
+    //isAuthor
+
+    // if(!catch_id.author.equals(req.user._id)){
+    //     req.flash('error',"You don't have permission to do that");
+    //     return res.redirect(`/picnic_ground/${id}`);
+    // }
 
     res.render('picnic_ground/edit',{catch_id});
 }));
 
-router.put("/:id",isLoggedIn,validatePicnic,catchAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,isAuthor,validatePicnic,catchAsync(async(req,res)=>{
     // res.send("It worked");
     const {id}=req.params;      //id is a object , that stores all req parameters. 
     const picnic3 = await Picnic.findById(id);
-    if(!picnic3.author.equals(req.user._id)){
-        req.flash('error',"You don't have permission to do that");
-        return res.redirect(`/picnic_ground/${id}`);
-    }
+
+    //i have created a middleware for it..
+
+    // if(!picnic3.author.equals(req.user._id)){
+    //     req.flash('error',"You don't have permission to do that");
+    //     return res.redirect(`/picnic_ground/${id}`);
+    // }
+
     const picnic4 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here. //picnic4 variable main store hai.. kaam aayegaa toh dekh lenge..
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }));
 
-router.delete("/:id",isLoggedIn,catchAsync(async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
+router.delete("/:id",isLoggedIn,isAuthor,catchAsync(async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
     // res.send("it worked");
     const {id}=req.params;
 
