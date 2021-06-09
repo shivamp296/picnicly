@@ -39,7 +39,8 @@ router.get("/new",isLoggedIn,catchAsync(async(req,res)=>{
 router.post("/",isLoggedIn,validatePicnic,catchAsync(async(req,res,next)=>{
     // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
 
-    const new_model_variable=new Picnic(req.body.picnic);    
+    const new_model_variable=new Picnic(req.body.picnic);  
+    new_model_variable.author = req.user._id;  
     await new_model_variable.save();       
     
     req.flash('success','Successfully made a new picnic ground !');
@@ -67,8 +68,8 @@ router.post("/",isLoggedIn,validatePicnic,catchAsync(async(req,res,next)=>{
 // });
 
 router.get("/:id",catchAsync(async(req,res)=>{
-    const catch_id=await Picnic.findById(req.params.id).populate('reviews');
-    // console.log(catch_id); just for checking
+    const catch_id=await Picnic.findById(req.params.id).populate('reviews').populate('author');
+    console.log(catch_id); //just for checking
 
     if(!catch_id){
         req.flash('error','Cannot find that picnic spot u entered !');
