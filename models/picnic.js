@@ -7,6 +7,10 @@ const PicnicSchema=new Schema({
     price: Number,
     description: String,
     location: String,
+    author: {
+        type:Schema.Types.ObjectId, //take id as a type 
+        ref:"User"  //take reference from Review Model.
+    },
     reviews:[
         {
             type:Schema.Types.ObjectId,      //take id as a type 
