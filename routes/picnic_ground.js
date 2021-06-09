@@ -2,11 +2,11 @@ const express=require('express');
 const router=express.Router();
 
 const catchAsync=require("../utils/catchAsync");
-const ExpressError=require("../utils/ExpressError");
+// const ExpressError=require("../utils/ExpressError");    //since we moved middleware so this is required in middleware,js
 
 const Picnic=require('../models/picnic');
 
-const {picnicSchema}=require("../schemas.js");
+// const {picnicSchema}=require("../schemas.js");   //since we moved middleware so this is required in middleware,js
 const {isLoggedIn,isAuthor,validatePicnic}=require("../middleware");
 
 // Moving this in a middleware file...
@@ -81,8 +81,14 @@ router.post("/",isLoggedIn,validatePicnic,catchAsync(async(req,res,next)=>{
 // });
 
 router.get("/:id",catchAsync(async(req,res)=>{
-    const catch_id=await Picnic.findById(req.params.id).populate('reviews').populate('author');
-    // console.log(catch_id); //just for checking
+    // const catch_id=await Picnic.findById(req.params.id).populate('reviews').populate('author'); i needed that hrr ek review kaa author populate ho...
+    const catch_id=await Picnic.findById(req.params.id).populate({
+        path:'reviews',
+        populate:{
+            path:'author'
+        }
+    }).populate('author');
+    console.log(catch_id); //just for checking
 
     if(!catch_id){
         req.flash('error','Cannot find that picnic spot u entered !');

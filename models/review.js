@@ -4,10 +4,10 @@ const Schema=mongoose.Schema;
 const reviewSchema=new Schema({
     body:String,                //"Thsi is a great place"
     rating:Number,               //5
-    author:{                    //rating kon diyaa hai..ye ptaa lg jaaegaa
-        type:Schema.Types.ObjectId,
-        ref:'User',
-    }
+    author: {
+        type:Schema.Types.ObjectId, //take id as a type 
+        ref:"User"  //take reference from Review Model.
+    },
 });
 
 module.exports=mongoose.model("Review",reviewSchema);

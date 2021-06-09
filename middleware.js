@@ -1,6 +1,7 @@
 const {picnicSchema,reviewSchema}=require("./schemas.js");
 const ExpressError=require("./utils/ExpressError");
 const Picnic=require('./models/picnic');
+const Review=require("./models/review");
 // const {reviewSchema}=require("./schemas.js");
 
 module.exports.isLoggedIn=(req,res,next)=>{
@@ -37,6 +38,17 @@ module.exports.isAuthor = async(req,res,next)=>{
     const {id}=req.params;      //id is a object , that stores all req parameters. 
     const picnic3 = await Picnic.findById(id);
     if(!picnic3.author.equals(req.user._id)){
+        req.flash('error',"You don't have permission to do that");
+        return res.redirect(`/picnic_ground/${id}`);
+    }
+    next(); 
+}
+
+//middleware
+module.exports.isReviewAuthor = async(req,res,next)=>{
+    const {id,reviewId}=req.params;      //id is a object , that stores all req parameters. 
+    const review = await Review.findById(reviewId);
+    if(!review.author.equals(req.user._id)){
         req.flash('error',"You don't have permission to do that");
         return res.redirect(`/picnic_ground/${id}`);
     }
