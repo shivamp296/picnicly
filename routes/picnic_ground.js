@@ -69,7 +69,7 @@ router.post("/",isLoggedIn,validatePicnic,catchAsync(async(req,res,next)=>{
 
 router.get("/:id",catchAsync(async(req,res)=>{
     const catch_id=await Picnic.findById(req.params.id).populate('reviews').populate('author');
-    console.log(catch_id); //just for checking
+    // console.log(catch_id); //just for checking
 
     if(!catch_id){
         req.flash('error','Cannot find that picnic spot u entered !');
