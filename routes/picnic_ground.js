@@ -80,25 +80,39 @@ router.get("/:id",catchAsync(async(req,res)=>{
 }));
 
 router.get("/:id/edit",isLoggedIn,catchAsync(async(req,res)=>{
-    const catch_id=await Picnic.findById(req.params.id);
+    const {id}=req.params;
+    const catch_id=await Picnic.findById(id);
+    
     if(!catch_id){
         req.flash('error','Cannot find that picnic spot u entered !');
         return res.redirect("/picnic_ground");
     }
+
+    if(!catch_id.author.equals(req.user._id)){
+        req.flash('error',"You don't have permission to do that");
+        return res.redirect(`/picnic_ground/${id}`);
+    }
+
     res.render('picnic_ground/edit',{catch_id});
 }));
 
-router.put("/:id",catchAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,validatePicnic,catchAsync(async(req,res)=>{
     // res.send("It worked");
     const {id}=req.params;      //id is a object , that stores all req parameters. 
-    const picnic3 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here.
+    const picnic3 = await Picnic.findById(id);
+    if(!picnic3.author.equals(req.user._id)){
+        req.flash('error',"You don't have permission to do that");
+        return res.redirect(`/picnic_ground/${id}`);
+    }
+    const picnic4 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here. //picnic4 variable main store hai.. kaam aayegaa toh dekh lenge..
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }));
 
-router.delete("/:id",catchAsync(async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
+router.delete("/:id",isLoggedIn,catchAsync(async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
     // res.send("it worked");
     const {id}=req.params;
+
     await Picnic.findByIdAndDelete(id);
     req.flash("success","Successfully deleted a picnic ground");
     res.redirect('/picnic_ground');
