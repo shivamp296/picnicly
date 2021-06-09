@@ -9,7 +9,7 @@ const Review=require("../models/review");
 
 // const {reviewSchema}=require("../schemas.js");  //file moved so it is required there..
 
-const { validateReview} = require('../middleware');
+const { validateReview , isLoggedIn} = require('../middleware');
 
 // const validateReview=(req,res,next)=>{   //moved to middleware.js
 //     const {error}=reviewSchema.validate(req.body);
@@ -21,7 +21,7 @@ const { validateReview} = require('../middleware');
 //     }
 // }
 
-router.post("/",validateReview, catchAsync(async(req,res)=>{
+router.post("/",validateReview,isLoggedIn, catchAsync(async(req,res)=>{
     // res.send("You made it !");  
     const picnic=await Picnic.findById(req.params.id);
 

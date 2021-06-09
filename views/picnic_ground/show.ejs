@@ -34,6 +34,8 @@
     </div>
 
     <div class="col-6">
+      <!-- If curent user.. is present , then only allowing him to review.. -->
+      <% if(currentUser) { %> 
       <h2>Leave a review</h2>
           <form action="/picnic_ground/<%= catch_id._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
             <div class="mb-3">
@@ -51,7 +53,7 @@
               <!-- body naam diyaa hu... review.js main -->
               <button class="btn btn-success">Submit</button>
           </form>
-
+          <% } %> 
           <% for(let rev of catch_id.reviews){ %> 
             <div class="mb-3 card">
             <div class="card-body">
