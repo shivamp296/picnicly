@@ -40,11 +40,18 @@ const picnic_ground = require("../controllers/picnic_ground");
 //     res.render('picnic_ground/index',{picnic_ground1});
 // }));
 
-router.get("/",catchAsync(picnic_ground.index));
+//fancy way of structuring
+
+router.route("/")
+    .get(catchAsync(picnic_ground.index))
+    .post(isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround))
+
+// router.get("/",catchAsync(picnic_ground.index));
 
 router.get("/new",isLoggedIn,catchAsync(picnic_ground.renderNewForm));
 
-router.post("/",isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround));
+// router.post("/",isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround));
+
 
 // app.post("/picnic_ground",async(req,res,next)=>{
 //     // res.send(req.body);     //we dont see anything it is empty bcz req.body is not parsed
@@ -65,12 +72,17 @@ router.post("/",isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicG
 
 // });
 
-router.get("/:id",catchAsync(picnic_ground.showPicnicGround));
+router.route("/:id")
+    .get(catchAsync(picnic_ground.showPicnicGround))
+    .put(isLoggedIn,isAuthor,validatePicnic,catchAsync(picnic_ground.updatePicnicGround))
+    .delete(isLoggedIn,isAuthor,catchAsync(picnic_ground.deletePicnicGround));
+
+// router.get("/:id",catchAsync(picnic_ground.showPicnicGround));
 
 router.get("/:id/edit",isLoggedIn,isAuthor,catchAsync(picnic_ground.renderEditForm));
 
-router.put("/:id",isLoggedIn,isAuthor,validatePicnic,catchAsync(picnic_ground.updatePicnicGround));
+// router.put("/:id",isLoggedIn,isAuthor,validatePicnic,catchAsync(picnic_ground.updatePicnicGround));
 
-router.delete("/:id",isLoggedIn,isAuthor,catchAsync(picnic_ground.deletePicnicGround));
+// router.delete("/:id",isLoggedIn,isAuthor,catchAsync(picnic_ground.deletePicnicGround));
 
 module.exports=router;
