@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/stars.css">
 
 <div class="row">
     <div class="col-6">
@@ -57,8 +58,11 @@
           <% for(let rev of catch_id.reviews){ %> 
             <div class="mb-3 card">
             <div class="card-body">
-              <h5 class="card-title">Rating : <%= rev.rating %></h5>
-              <h6 class="card-subtitle mb-2 text-muted">By : <%= rev.author.username %> </h6>
+              <h5 class="card-title"><%= rev.author.username %></h5>
+              <p class="starability-result" data-rating="<%= rev.rating %>">
+                Rated: <%= rev.rating %> stars
+              </p>
+              <!-- <h6 class="card-subtitle mb-2 text-muted">By : <%= rev.author.username %> </h6> -->
               <p class="card-text"><%= rev.body %></p>              
                  <!--It will display everything that rev variable contains .body is a field inside model  -->
                  <% if(currentUser && rev.author.equals(currentUser._id)) {%>
