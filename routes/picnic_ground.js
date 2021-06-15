@@ -11,6 +11,10 @@ const {isLoggedIn,isAuthor,validatePicnic}=require("../middleware");
 
 //controllers
 const picnic_ground = require("../controllers/picnic_ground");
+
+//multer
+var multer  = require('multer')
+var upload = multer({ dest: './public/data/uploads/' })
 // Moving this in a middleware file...
 
 // const validatePicnic=(req,res,next)=>{
@@ -44,8 +48,10 @@ const picnic_ground = require("../controllers/picnic_ground");
 
 router.route("/")
     .get(catchAsync(picnic_ground.index))
-    .post(isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround))
-
+    // .post(isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround))
+    .post(upload.single('image'),(req,res)=>{
+        res.send(req.body,req.file);    //res.send doesnt support req.body
+    })
 // router.get("/",catchAsync(picnic_ground.index));
 
 router.get("/new",isLoggedIn,catchAsync(picnic_ground.renderNewForm));
