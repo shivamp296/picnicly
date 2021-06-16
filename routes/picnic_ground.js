@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production"){
+    require('dotenv').config();
+}
+
 const express=require('express');
 const router=express.Router();
 
@@ -13,8 +17,9 @@ const {isLoggedIn,isAuthor,validatePicnic}=require("../middleware");
 const picnic_ground = require("../controllers/picnic_ground");
 
 //multer
-var multer  = require('multer')
-var upload = multer({ dest: './public/data/uploads/' })
+const multer  = require('multer');
+const {storage} = require('../cloudinary');
+const upload = multer({ storage })
 // Moving this in a middleware file...
 
 // const validatePicnic=(req,res,next)=>{
@@ -49,8 +54,9 @@ var upload = multer({ dest: './public/data/uploads/' })
 router.route("/")
     .get(catchAsync(picnic_ground.index))
     // .post(isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround))
-    .post(upload.single('image'),(req,res)=>{
-        res.send(req.body,req.file);    //res.send doesnt support req.body
+    .post(upload.array('image'),(req,res)=>{
+        console.log(req.body,req.files);
+        res.send("IT WORKED !");    //res.send doesnt support req.body
     })
 // router.get("/",catchAsync(picnic_ground.index));
 
