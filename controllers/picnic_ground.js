@@ -19,10 +19,14 @@ module.exports.renderNewForm = async(req,res)=>{
 module.exports.createPicnicGround = async(req,res,next)=>{
     // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
 
-    const new_model_variable=new Picnic(req.body.picnic);  
+    const new_model_variable=new Picnic(req.body.picnic);
+
+    new_model_variable.image =  req.files.map(f => ({url:f.path,filename:f.filename})); //map files with every path n filename.. 
+
     new_model_variable.author = req.user._id;  
     await new_model_variable.save();       
-    
+    console.log(new_model_variable);
+
     req.flash('success','Successfully made a new picnic ground !');
 
     res.redirect(`/picnic_ground/${new_model_variable._id}`);   

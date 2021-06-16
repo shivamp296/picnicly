@@ -53,11 +53,12 @@ const upload = multer({ storage })
 
 router.route("/")
     .get(catchAsync(picnic_ground.index))
-    // .post(isLoggedIn,validatePicnic,catchAsync(picnic_ground.createPicnicGround))
-    .post(upload.array('image'),(req,res)=>{
-        console.log(req.body,req.files);
-        res.send("IT WORKED !");    //res.send doesnt support req.body
-    })
+    .post(isLoggedIn,upload.array('image'),validatePicnic,catchAsync(picnic_ground.createPicnicGround))
+    // .post(upload.array('image'),(req,res)=>{
+    //     console.log(req.body,req.files);
+    //     res.send("IT WORKED !");    //res.send doesnt support req.body
+    // })
+
 // router.get("/",catchAsync(picnic_ground.index));
 
 router.get("/new",isLoggedIn,catchAsync(picnic_ground.renderNewForm));
