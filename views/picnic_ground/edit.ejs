@@ -43,6 +43,17 @@
             </div>
 
             <div class="mb-3">
+                <% catch_id.image.forEach(function(img,i) {%>
+                    <img src="<%= img.url %>" class="img-thumbnail" alt="">
+                    
+                    <div class="form-check-inline">
+                        <input type="checkbox" id="image-<%= i %>" name="deleteImage[]" value="<%= img.filename %>">
+                    </div>
+                    <label for="image-<%= i %>">Delete ? </label>
+                <% }) %> 
+            </div>
+
+            <div class="mb-3">
                 <button class="btn btn-success">Update Picnic Ground</button>
             </div>
             <div>
