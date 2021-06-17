@@ -1,4 +1,5 @@
 const Picnic=require('../models/picnic');
+const {cloudinary} = require('../cloudinary');
 
 module.exports.index = async(req,res)=>{
     const picnic_ground1=await Picnic.find({});
@@ -86,6 +87,13 @@ module.exports.updatePicnicGround = async(req,res)=>{
     const imgs = req.files.map(f => ({url:f.path,filename:f.filename}));
     picnic4.image.push(...imgs); //map files with every path n filename.. 
     await picnic4.save();
+    if(req.body.deleteImage){
+        for(let i of req.body.deleteImage){    //destroying files also from cloudinary...
+            await cloudinary.uploader.destroy(i);
+        }
+    await picnic4.updateOne({$pull:{image:{filename:{$in:req.body.deleteImage}}}});
+    console.log(picnic4);
+    }
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }
