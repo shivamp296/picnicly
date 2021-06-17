@@ -30,10 +30,18 @@ const seedDB=async()=>{
             author:'606c3f2e865b692bcc701a34',
             location:`${cities[random1000].city},${cities[random1000].state}`,
             title:`${sample(descriptors)} ${sample(places)}`,
-            image:`https://source.unsplash.com/collection/190727/1600x900`,
+            // image:`https://source.unsplash.com/collection/190727/1600x900`,
             description:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, ea? Ut velit mollitia placeat! Hic minima inventore, exercitationem commodi esse cum? Dolorum dolorem inventore commodi!`,
-            price:price
+            price:price,
             // or no need just write =>  price
+            image:[
+            {
+            url: 'https://res.cloudinary.com/psaber29/image/upload/v1623959255/Picnic/welmrky6xn6rxonkpqdp.jpg',
+            filename: 'Picnic/welmrky6xn6rxonkpqdp'    },
+            {
+            url: 'https://res.cloudinary.com/psaber29/image/upload/v1623959254/Picnic/voa9rbpbxdbeid5vfek9.jpg',
+            filename: 'Picnic/voa9rbpbxdbeid5vfek9'    },
+            ]
         })
         await pic1.save();
     }
