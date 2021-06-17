@@ -87,7 +87,7 @@ router.get("/new",isLoggedIn,catchAsync(picnic_ground.renderNewForm));
 
 router.route("/:id")
     .get(catchAsync(picnic_ground.showPicnicGround))
-    .put(isLoggedIn,isAuthor,validatePicnic,catchAsync(picnic_ground.updatePicnicGround))
+    .put(isLoggedIn,isAuthor,upload.array('image'),validatePicnic,catchAsync(picnic_ground.updatePicnicGround))
     .delete(isLoggedIn,isAuthor,catchAsync(picnic_ground.deletePicnicGround));
 
 // router.get("/:id",catchAsync(picnic_ground.showPicnicGround));

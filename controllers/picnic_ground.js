@@ -83,6 +83,9 @@ module.exports.updatePicnicGround = async(req,res)=>{
     // }
 
     const picnic4 = await Picnic.findByIdAndUpdate(id,{...req.body.picnic});   //spread operator when all the elements need to be included or brought here. //picnic4 variable main store hai.. kaam aayegaa toh dekh lenge..
+    const imgs = req.files.map(f => ({url:f.path,filename:f.filename}));
+    picnic4.image.push(...imgs); //map files with every path n filename.. 
+    await picnic4.save();
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }
