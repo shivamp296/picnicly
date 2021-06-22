@@ -97,7 +97,6 @@ module.exports.updatePicnicGround = async(req,res)=>{
     }
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
-    res.redirect(`/picnic_ground/${picnic3._id}`);
 }
 }
 
