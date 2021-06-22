@@ -88,7 +88,8 @@ module.exports.updatePicnicGround = async(req,res)=>{
     picnic4.image.push(...imgs); //map files with every path n filename.. 
     await picnic4.save();
     if(req.body.deleteImage){
-        for(let i of req.body.deleteImage){    //destroying files also from cloudinary...
+        for(let i of req.body.deleteImage){    //destroying files also from cloudinary......
+            //looping n deleting them....
             await cloudinary.uploader.destroy(i);
         }
     await picnic4.updateOne({$pull:{image:{filename:{$in:req.body.deleteImage}}}});
@@ -96,6 +97,8 @@ module.exports.updatePicnicGround = async(req,res)=>{
     }
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
+    res.redirect(`/picnic_ground/${picnic3._id}`);
+}
 }
 
 module.exports.deletePicnicGround = async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
