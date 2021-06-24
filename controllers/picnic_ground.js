@@ -1,4 +1,7 @@
 const Picnic=require('../models/picnic');
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken});
 const {cloudinary} = require('../cloudinary');
 
 module.exports.index = async(req,res)=>{
@@ -19,6 +22,14 @@ module.exports.renderNewForm = async(req,res)=>{
 
 module.exports.createPicnicGround = async(req,res,next)=>{
     // if(!req.body.picnic) throw new ExpressError("Invalid Picnic Ground Data",400);
+
+    const geoData = await geocoder.forwardGeocode({
+        // query : "Yosemite , CA",
+        query : req.body.picnic.location,
+        limit: 1
+    }).send();
+
+    res.send(geoData.body.features[0].geometry.coordinates);    //longitude , latitude but in google map it is latitude, longitude
 
     const new_model_variable=new Picnic(req.body.picnic);
 
