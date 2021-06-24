@@ -1,14 +1,15 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;   //no need of writing mongoose.Schema everytime instead jst write Schema
 const Review=require("./review");
+
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+})
+
 const PicnicSchema=new Schema({
     title: String,
-    image: [
-        {
-            url:String,
-            filename: String
-        }
-    ],
+    image: [ImageSchema],
     price: Number,
     description: String,
     location: String,

@@ -98,7 +98,6 @@ module.exports.updatePicnicGround = async(req,res)=>{
     req.flash('success',"Successfully updated the picnic ground u entered !");
     res.redirect(`/picnic_ground/${picnic3._id}`);
 }
-}
 
 module.exports.deletePicnicGround = async(req,res)=>{      //suffered 2 hrs because of incorrect path name next time pay attention
     // res.send("it worked");
