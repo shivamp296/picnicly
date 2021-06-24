@@ -29,9 +29,10 @@ module.exports.createPicnicGround = async(req,res,next)=>{
         limit: 1
     }).send();
 
-    res.send(geoData.body.features[0].geometry.coordinates);    //longitude , latitude but in google map it is latitude, longitude
+    // res.send(geoData.body.features[0].geometry.coordinates);    //longitude , latitude but in google map it is latitude, longitude
 
     const new_model_variable=new Picnic(req.body.picnic);
+    new_model_variable.geometry = geoData.body.features[0].geometry;
 
     new_model_variable.image =  req.files.map(f => ({url:f.path,filename:f.filename})); //map files with every path n filename.. 
 
