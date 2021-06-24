@@ -44,7 +44,7 @@
 
             <div class="mb-3">
                 <% catch_id.image.forEach(function(img,i) {%>
-                    <img src="<%= img.url %>" class="img-thumbnail" alt="">
+                    <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
                     
                     <div class="form-check-inline">
                         <input type="checkbox" id="image-<%= i %>" name="deleteImage[]" value="<%= img.filename %>">

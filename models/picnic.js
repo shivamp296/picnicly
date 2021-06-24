@@ -7,6 +7,10 @@ const ImageSchema = new Schema({
     filename: String
 })
 
+ImageSchema.virtual('thumbnail').get(function(){
+    return this.url.replace('/upload','/upload/w_150'); //or could use regular expression
+});
+
 const PicnicSchema=new Schema({
     title: String,
     image: [ImageSchema],
