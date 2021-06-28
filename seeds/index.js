@@ -27,6 +27,7 @@ const seedDB=async()=>{
         const random1000=Math.floor(Math.random()*1000);
         const price=Math.floor(Math.random()*20)+10;
         const pic1 = new Picnic({
+            //Your user id
             author:'606c3f2e865b692bcc701a34',
             location:`${cities[random1000].city},${cities[random1000].state}`,
             title:`${sample(descriptors)} ${sample(places)}`,
@@ -34,6 +35,10 @@ const seedDB=async()=>{
             description:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, ea? Ut velit mollitia placeat! Hic minima inventore, exercitationem commodi esse cum? Dolorum dolorem inventore commodi!`,
             price:price,
             // or no need just write =>  price
+            geometry:{
+                type:"Point",
+                coordinates: [-113.1331, 47.0202]
+            },
             image:[
             {
             url: 'https://res.cloudinary.com/psaber29/image/upload/v1623959255/Picnic/welmrky6xn6rxonkpqdp.jpg',

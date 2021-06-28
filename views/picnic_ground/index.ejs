@@ -17,7 +17,11 @@
             <div class="row">
 
                 <div class="col-md-4">
+                    <% if(i.image.length) { %> 
                     <img class="img-fluid" src="<%= i.image[0].url %> " alt="">
+                    <% }else { %>
+                    <img class="img-fluid" src="https://res.cloudinary.com/psaber29/image/upload/v1623959255/Picnic/welmrky6xn6rxonkpqdp.jpg" alt="">   
+                    <% } %> 
                 </div>
 
                 <div class="col-md-8">
