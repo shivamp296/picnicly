@@ -17,7 +17,8 @@ map.addSource('earthquakes', {
 type: 'geojson',
 // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
 // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+// data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+data: picnic_info,
 cluster: true,
 clusterMaxZoom: 14, // Max zoom to cluster points on
 clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -136,3 +137,9 @@ map.on('mouseleave', 'clusters', function () {
 map.getCanvas().style.cursor = '';
 });
 });
+
+// { 
+//     "type": "Feature", 
+//     "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 }, 
+//     "geometry": { "type": "Point", "coordinates": [ -151.5129, 63.1016, 0.0 ] }
+// }
