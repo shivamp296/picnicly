@@ -9,6 +9,8 @@
   zoom: 7 // starting zoom
   });
 
+  map.addControl(new mapboxgl.NavigationControl());
+  
   //setting marker
   new mapboxgl.Marker()
   .setLngLat(picnic_info.geometry.coordinates)
