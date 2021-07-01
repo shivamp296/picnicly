@@ -2,7 +2,7 @@
 	// ADD YOUR ACCESS TOKEN FROM
 	// https://account.mapbox.com
 	mapboxgl.accessToken = mapToken;
-const map = new mapboxgl.Map({
+var map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/light-v10',
 center: [-103.59179687498357, 40.66995747013945],
@@ -106,9 +106,9 @@ zoom: zoom
 // description HTML from its properties.
 map.on('click', 'unclustered-point', function (e) {
 	const {popUpMarkup}= e.features[0].properties;
-const coordinates = e.features[0].geometry.coordinates.slice();
-const mag = e.features[0].properties.mag;
-const tsunami;
+var coordinates = e.features[0].geometry.coordinates.slice();
+var mag = e.features[0].properties.mag;
+var tsunami;
  
 if (e.features[0].properties.tsunami === 1) {
 tsunami = 'yes';
