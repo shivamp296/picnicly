@@ -2,7 +2,7 @@
 	// ADD YOUR ACCESS TOKEN FROM
 	// https://account.mapbox.com
 	mapboxgl.accessToken = mapToken;
-var map = new mapboxgl.Map({
+const map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/light-v10',
 center: [-103.59179687498357, 40.66995747013945],
@@ -105,9 +105,10 @@ zoom: zoom
 // the location of the feature, with
 // description HTML from its properties.
 map.on('click', 'unclustered-point', function (e) {
-var coordinates = e.features[0].geometry.coordinates.slice();
-var mag = e.features[0].properties.mag;
-var tsunami;
+	const {popUpMarkup}= e.features[0].properties;
+const coordinates = e.features[0].geometry.coordinates.slice();
+const mag = e.features[0].properties.mag;
+const tsunami;
  
 if (e.features[0].properties.tsunami === 1) {
 tsunami = 'yes';
@@ -124,9 +125,7 @@ coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
  
 new mapboxgl.Popup()
 .setLngLat(coordinates)
-.setHTML(
-'magnitude: ' + mag + '<br>Was there a tsunami?: ' + tsunami
-)
+.setHTML(popUpMarkup) 
 .addTo(map);
 });
  

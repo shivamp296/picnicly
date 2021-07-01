@@ -11,6 +11,8 @@ ImageSchema.virtual('thumbnail').get(function(){
     return this.url.replace('/upload','/upload/w_150'); //or could use regular expression
 });
 
+const opts = {toJSON:{virtuals:true}};
+
 const PicnicSchema=new Schema({
     title: String,
     image: [ImageSchema],
@@ -39,6 +41,12 @@ const PicnicSchema=new Schema({
             ref:"Review"                       //take reference from Review Model.
         }
     ]
+},opts);
+
+PicnicSchema.virtual('properties.popUpMarkup').get(function(){
+    return `
+    <strong><a href="/picnic_ground/${this._id}">${this.title}</a><strong>
+    <p>${this.description.substring(0,20)}...</p>`
 });
 
 // mongoose middleware.
