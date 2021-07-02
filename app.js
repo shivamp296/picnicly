@@ -10,6 +10,8 @@ const Review=require("./models/review");
 // const Joi = require("joi");
 // const {picnicSchema,reviewSchema}=require("./schemas.js");
 
+const mongoSanitize = require('express-mongo-sanitize');
+
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user");
@@ -48,6 +50,11 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 // app.use(express.static('public'));  //telling our app to serve public directory
 app.use(express.static(path.join(__dirname,'public')));  //telling our app to serve public directory
+// To remove data, use:
+app.use(mongoSanitize({
+    replaceWith: '_',
+}
+));
 
 const sessionConfig={
     secret:'thisshouldbeabettersecret!',
