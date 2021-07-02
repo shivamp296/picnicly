@@ -77,6 +77,71 @@ const sessionConfig={
 app.use(session(sessionConfig));
 app.use(flash());
 
+
+
+//I have to fix it....
+
+// app.use(helmet({contentSecurityPolicy:false}));
+
+// app.use(helmet());
+
+
+// const scriptSrcUrls = [
+//     "https://stackpath.bootstrapcdn.com",
+//     "https://api.tiles.mapbox.com",
+//     "https://api.mapbox.com",
+//     "https://kit.fontawesome.com",
+//     "https://cdnjs.cloudflare.com",
+//     "https://cdn.jsdelivr.net",
+// ];
+// const styleSrcUrls = [
+//     "https://kit-free.fontawesome.com",
+//     "https://stackpath.bootstrapcdn.com",
+//     "https://api.mapbox.com",
+//     "https://api.tiles.mapbox.com",
+//     "https://fonts.googleapis.com",
+//     "https://use.fontawesome.com",
+// ];
+// const connectSrcUrls = [
+//     "https://api.mapbox.com",
+//     "https://*.tiles.mapbox.com",
+//     "https://events.mapbox.com",
+// ];
+// const fontSrcUrls = [];
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         directives: {
+//             defaultSrc: [],
+//             connectSrc: ["'self'", ...connectSrcUrls],
+//             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+//             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+//             workerSrc: ["'self'", "blob:"],
+//             childSrc: ["blob:"],
+//             objectSrc: [],
+//             imgSrc: [
+//                 "'self'",
+//                 "blob:",
+//                 "data:",
+//                 "https://res.cloudinary.com/psaber29/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+//                 "https://images.unsplash.com",
+//             ],
+//             fontSrc: ["'self'", ...fontSrcUrls],
+//         },
+//     })
+// );
+
+
+// const validateReview=(req,res,next)=>{
+//     const {error}=reviewSchema.validate(req.body);
+//     if(error){
+//         const msg=error.details.map(el=>el.message).join(',')
+//         throw new ExpressError(msg,400);
+//     }else{
+//         next();
+//     }
+// }
+
+
 // const validateReview=(req,res,next)=>{
 //     const {error}=reviewSchema.validate(req.body);
 //     if(error){
@@ -111,8 +176,6 @@ app.get("/fakeuser",async(req,res)=>{
 app.use("/picnic_ground",picnic_groundRoutes);    //useful in breaking down  picnic_ground routes.
 app.use("/picnic_ground/:id/reviews",reviewsRoutes);    //useful in breaking down reviews routes.
 app.use("/",userRoutes);    //useful in breaking down reviews routes.
-
-app.use(helmet({contentSecurityPolicy:false}));
 
 app.get("/",(req,res)=>{
     res.render('home');
