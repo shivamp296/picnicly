@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== "production"){
+    require("dotenv").config();
+}
+
 const express=require("express");
 const path=require("path");
 const ejsMate=require("ejs-mate");
@@ -5,6 +9,7 @@ const methodOverride=require("method-override");
 // method-override mtlab --- hrr chigg post main hi krrun.. but ?_method="DELETE" se rename krrke usko delete route bnaa dun..
 const mongoose=require('mongoose');
 // const catchAsync=require("./utils/catchAsync");
+
 const ExpressError=require("./utils/ExpressError");
 const Review=require("./models/review");
 // const Joi = require("joi");
@@ -23,7 +28,8 @@ const Picnic=require('./models/picnic');
 
 const picnic_groundRoutes=require('./routes/picnic_ground');      //necessary for breakouts
 const reviewsRoutes=require('./routes/reviews');                  //necessary for breakouts
-const userRoutes=require("./routes/users")
+const userRoutes=require("./routes/users");
+
 
 mongoose.connect('mongodb://localhost:27017/picnic-ly',{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
@@ -57,11 +63,13 @@ app.use(mongoSanitize({
 ));
 
 const sessionConfig={
+    name:"session",
     secret:'thisshouldbeabettersecret!',
     resave:false,
     saveUninitialized:true,
     cookie:{
         httpOnly:true,
+        // secure:true,
         expires: Date.now() + 1000*60*60*24*7,  //present date se 7 days tkk...
         maxAge: 1000*60*60*24*7                 //max 7 days time in milli-seconds
     }
