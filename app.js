@@ -4,6 +4,7 @@ if(process.env.NODE_ENV !== "production"){
 
 const express=require("express");
 const path=require("path");
+//for path..
 const ejsMate=require("ejs-mate");
 const methodOverride=require("method-override");
 // method-override mtlab --- hrr chigg post main hi krrun.. but ?_method="DELETE" se rename krrke usko delete route bnaa dun..
