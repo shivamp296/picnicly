@@ -32,7 +32,9 @@ const reviewsRoutes=require('./routes/reviews');                  //necessary fo
 const userRoutes=require("./routes/users");
 const helmet = require('helmet');
 
-mongoose.connect('mongodb://localhost:27017/picnic-ly',{    //connect to database *** picnic-ly ***
+const dbUrl=process.env.DB_URL;
+// 'mongodb://localhost:27017/picnic-ly'
+mongoose.connect(dbUrl,{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
     useCreateIndex:true,
     useUnifiedTopology:true,

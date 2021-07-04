@@ -1,4 +1,4 @@
-const users = require("../controllers/users");
+const User = require("../models/user");
 
 module.exports.renderRegister = (req,res)=>{
     res.render("users/register");
@@ -7,9 +7,17 @@ module.exports.renderRegister = (req,res)=>{
 module.exports.register = async(req,res,next)=>{
     // res.send(req.body);
     try{
+    // console.log("Im here1");
     const {email,username,password}=req.body;
+    // console.log("Im here1.2");
+    // console.log(email);
+    // console.log(username);
+    // console.log(password);
     const user=new User({email,username});
+    // console.log(user);
+    // console.log("Im here1.3");
     const registeredUser=await User.register(user,password);
+    // console.log("Im here2");
     //after registeration we want the user should be automatcally logged in... no need to login once again
     req.login(registeredUser,err=>{
         if(err){
@@ -21,6 +29,7 @@ module.exports.register = async(req,res,next)=>{
     
     }catch(e){
         req.flash("error",e.message);
+        // console.log("Im here3");
         res.redirect("register");
     }
     // console.log(registeredUser);  
