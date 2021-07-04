@@ -32,8 +32,9 @@ const reviewsRoutes=require('./routes/reviews');                  //necessary fo
 const userRoutes=require("./routes/users");
 const helmet = require('helmet');
 
-const dbUrl=process.env.DB_URL;
-// 'mongodb://localhost:27017/picnic-ly'
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+const dbUrl='mongodb://localhost:27017/picnic-ly';
 mongoose.connect(dbUrl,{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
     useCreateIndex:true,
@@ -65,7 +66,18 @@ app.use(mongoSanitize({
 }
 ));
 
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret:'thisshouldbeabettersecret!',
+    touchAfter: 24*60*60,
+});
+
+store.on("error",function(e){
+    console.log("SESSION STORE EROR",e);
+});
+
 const sessionConfig={
+    store,
     name:"session",
     secret:'thisshouldbeabettersecret!',
     resave:false,
