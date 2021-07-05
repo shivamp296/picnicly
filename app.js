@@ -34,7 +34,8 @@ const helmet = require('helmet');
 
 const MongoDBStore = require('connect-mongo');
 
-const dbUrl='mongodb://localhost:27017/picnic-ly';
+// const dbUrl='mongodb://localhost:27017/picnic-ly';
+const dbUrl=process.env.DB_URL || 'mongodb://localhost:27017/picnic-ly';
 mongoose.connect(dbUrl,{    //connect to database *** picnic-ly ***
     useNewUrlParser:true,
     useCreateIndex:true,
@@ -72,8 +73,10 @@ app.use(mongoSanitize({
 //     touchAfter: 24*60*60,
 // });
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 app.use(session({
-    secret:'thisshouldbeabettersecret!',
+    secret,
     resave : false,
     saveUninitialized : true,
     store :MongoDBStore.create({ mongoUrl: dbUrl })
@@ -88,7 +91,7 @@ app.use(session({
 const sessionConfig={
     // store,
     name:"session",
-    secret:'thisshouldbeabettersecret!',
+    secret,
     resave:false,
     saveUninitialized:true,
     cookie:{
